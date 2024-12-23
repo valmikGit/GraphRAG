@@ -1,5 +1,10 @@
 package com.example.graphRAG.service;
 
+import com.example.graphRAG.entity.Author;
+import com.example.graphRAG.entity.Document;
+import com.example.graphRAG.repository.AuthorRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+
+import java.io.IOException;
 
 @Service
 public class NLPServiceImpl implements NLPService {
@@ -16,6 +23,9 @@ public class NLPServiceImpl implements NLPService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     public double[] generateEmbedding(String text) {
         try {
@@ -62,8 +72,23 @@ public class NLPServiceImpl implements NLPService {
     }
 
     private double[] parseJsonToArray(String json) {
-        // Parse the JSON string response into a double array.
-        // Use a JSON parsing library like Jackson or Gson.
-        return new double[] {}; // Placeholder
+        try {
+            // Use Jackson's ObjectMapper to parse JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Convert JSON string to double array
+            return objectMapper.readValue(json, double[].class);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to parse JSON to double array", e);
+        }
+    }
+
+    @PostConstruct
+    public void init() {
+        Author author = new Author();
+        author.setName("Random Author");
+        double[] random_Vector = {0.0, 0.0};
+        author.setVectorEmbedding(random_Vector);
+        authorRepository.save(author);
     }
 }
