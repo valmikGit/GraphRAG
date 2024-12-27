@@ -83,12 +83,12 @@ public class NLPServiceImpl implements NLPService {
         }
     }
 
-    @PostConstruct
-    public void init() {
-        Author author = new Author();
-        author.setName("Random Author");
-        double[] random_Vector = {0.0, 0.0};
-        author.setVectorEmbedding(random_Vector);
-        authorRepository.save(author);
-    }
+//    @PostConstruct
+//    public void init() {
+//        Author author = new Author();
+//        author.setName("Random Author");
+//        double[] random_Vector = {0.0, 0.0};
+//        author.setVectorEmbedding(random_Vector);
+//        authorRepository.save(author);
+//    }
 }
