@@ -2,6 +2,7 @@ package com.example.graphRAG.service;
 
 import com.example.graphRAG.dto.TopicDto;
 import com.example.graphRAG.entity.Topic;
+import com.example.graphRAG.exception.TopicAlreadyExistsException;
 import com.example.graphRAG.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +15,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDto addTopic(String name) {
+        if (topicRepository.findByName(name).isPresent()) {
+            throw new TopicAlreadyExistsException("Topic = " + name + " already exists.");
+        }
         Topic topic = new Topic();
         topic.setName(name);
         topicRepository.save(topic);

@@ -5,6 +5,7 @@ import com.example.graphRAG.dto.DocumentDto;
 import com.example.graphRAG.entity.Author;
 import com.example.graphRAG.entity.Document;
 import com.example.graphRAG.entity.Topic;
+import com.example.graphRAG.exception.DocumentAlreadyExistsException;
 import com.example.graphRAG.repository.AuthorRepository;
 import com.example.graphRAG.repository.DocumentRepository;
 import com.example.graphRAG.repository.TopicRepository;
@@ -26,6 +27,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentDto addDocument(String title, String content, long authorId) {
+        if (documentRepository.findByTitle(title).isPresent()) {
+            throw new DocumentAlreadyExistsException("Document with titlev = " + title + " already exists.");
+        }
         Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()) {
             Document document = new Document();

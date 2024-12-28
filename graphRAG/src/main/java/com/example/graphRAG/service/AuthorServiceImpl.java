@@ -2,6 +2,7 @@ package com.example.graphRAG.service;
 
 import com.example.graphRAG.dto.AuthorDto;
 import com.example.graphRAG.entity.Author;
+import com.example.graphRAG.exception.AuthorAlreadyExistsException;
 import com.example.graphRAG.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto addAuthor(String name) {
+        // Check if author with the same name already exists
+        if (authorRepository.findByName(name).isPresent()) {
+            throw new AuthorAlreadyExistsException("Author with name '" + name + "' already exists.");
+        }
         Author author = new Author();
         author.setName(name);
         author.setVectorEmbedding(nlpService.generateEmbedding(author.getName()));
