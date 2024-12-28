@@ -5,11 +5,13 @@ import com.example.graphRAG.dto.LoginReq;
 import com.example.graphRAG.dto.SignUpReq;
 import com.example.graphRAG.dto.UserDto;
 import com.example.graphRAG.entity.UserEntity;
+import com.example.graphRAG.exception.UserAlreadyExistsException;
 import com.example.graphRAG.repository.UserRepo;
 import com.example.graphRAG.service.auth.AuthService;
 import com.example.graphRAG.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -42,16 +44,17 @@ public class UserController {
     private UserRepo userRepo;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto> signup(@RequestBody SignUpReq sign){
+    public ResponseEntity<?> signup(@RequestBody SignUpReq sign){
         System.out.println(sign);
-
-        UserDto userDto=authService.createuser(sign);
-        if(userDto==null){
-            return ResponseEntity.notFound().build();
+        try {
+            UserDto userDto=authService.createuser(sign);
+            if(userDto==null){
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(userDto);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        return ResponseEntity.ok().body(userDto);
-
-
     }
     @PostMapping("/login")
     public AuthResponse createAuthToken(@RequestBody LoginReq authRequest, HttpServletResponse response) throws IOException {

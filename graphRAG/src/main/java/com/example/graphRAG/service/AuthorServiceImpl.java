@@ -20,15 +20,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto addAuthor(String name) {
-        // Check if author with the same name already exists
         if (authorRepository.findByName(name).isPresent()) {
             throw new AuthorAlreadyExistsException("Author with name '" + name + "' already exists.");
         }
         Author author = new Author();
         author.setName(name);
         author.setVectorEmbedding(nlpService.generateEmbedding(author.getName()));
-        authorRepository.save(author);
-        return author.convertToDto();
+        return authorRepository.save(author).convertToDto();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
         if (author.isPresent()) {
             author.get().setName(name);
             author.get().setVectorEmbedding(nlpService.generateEmbedding(author.get().getName()));
-            return author.get().convertToDto();
+            return authorRepository.save(author.get()).convertToDto();
         }
         else {
             return null;

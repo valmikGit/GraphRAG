@@ -28,7 +28,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentDto addDocument(String title, String content, long authorId) {
         if (documentRepository.findByTitle(title).isPresent()) {
-            throw new DocumentAlreadyExistsException("Document with titlev = " + title + " already exists.");
+            throw new DocumentAlreadyExistsException("Document with title = " + title + " already exists.");
         }
         Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()) {
@@ -38,8 +38,7 @@ public class DocumentServiceImpl implements DocumentService {
             document.setTitleVectorEmbedding(nlpService.generateEmbedding(document.getTitle()));
             document.setContentVectorEmbedding(nlpService.generateEmbedding(document.getContent()));
             document.setAuthor(author.get());
-            documentRepository.save(document);
-            return document.convertToDto();
+            return documentRepository.save(document).convertToDto();
         } else {
             return null;
         }
@@ -51,8 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (document.isPresent()) {
             document.get().setContent(content);
             document.get().setContentVectorEmbedding(nlpService.generateEmbedding(document.get().getContent()));
-            documentRepository.save(document.get());
-            return document.get().convertToDto();
+            return documentRepository.save(document.get()).convertToDto();
         }
         else {
             return null;
@@ -65,8 +63,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (document.isPresent()) {
             document.get().setTitle(title);
             document.get().setTitleVectorEmbedding(nlpService.generateEmbedding(document.get().getTitle()));
-            documentRepository.save(document.get());
-            return document.get().convertToDto();
+            return documentRepository.save(document.get()).convertToDto();
         }
         else {
             return null;

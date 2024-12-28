@@ -6,6 +6,7 @@ import com.example.graphRAG.exception.TopicAlreadyExistsException;
 import com.example.graphRAG.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.HttpRetryException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,7 @@ public class TopicServiceImpl implements TopicService {
         }
         Topic topic = new Topic();
         topic.setName(name);
-        topicRepository.save(topic);
-        return topic.convertToDto();
+        return topicRepository.save(topic).convertToDto();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class TopicServiceImpl implements TopicService {
         Optional<Topic> topic = topicRepository.findById(id);
         if (topic.isPresent()) {
             topic.get().setName(name);
-            return topic.get().convertToDto();
+            return topicRepository.save(topic.get()).convertToDto();
         } else {
             return null;
         }

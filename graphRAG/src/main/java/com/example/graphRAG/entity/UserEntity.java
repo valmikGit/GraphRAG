@@ -11,9 +11,9 @@ import java.util.Collection;
 
 @Setter
 @Data
-@Node
 @AllArgsConstructor
 @NoArgsConstructor
+@Node
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue
