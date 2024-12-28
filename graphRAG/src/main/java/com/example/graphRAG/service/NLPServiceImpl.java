@@ -49,14 +49,14 @@ public class NLPServiceImpl implements NLPService {
         }
     }
 
-    public String performQuestionAnswering(String query, String context) {
+    public String performQuestionAnswering(String query) {
         try {
             // Set up headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             // Prepare the request body
-            String requestBody = "{\"query\": \"" + query + "\", \"context\": \"" + context + "\"}";
+            String requestBody = "{\"query\": \"" + query + "\"}";
 
             // Create HttpEntity with headers and body
             HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
