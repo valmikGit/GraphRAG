@@ -5,11 +5,11 @@ import com.example.graphRAG.entity.Author;
 import com.example.graphRAG.exception.AuthorAlreadyExistsException;
 import com.example.graphRAG.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+@Service
 public class AuthorServiceImpl implements AuthorService {
 
     @Autowired

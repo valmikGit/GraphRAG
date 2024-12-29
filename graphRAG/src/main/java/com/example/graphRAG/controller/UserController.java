@@ -28,20 +28,22 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class UserController {
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
+    private final UserRepo userRepo;
 
-    @Autowired
-    private UserRepo userRepo;
+    public UserController(AuthService authService, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtils jwtUtils, UserRepo userRepo) {
+        this.authService = authService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtils = jwtUtils;
+        this.userRepo = userRepo;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpReq sign){

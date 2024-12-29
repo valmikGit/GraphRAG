@@ -29,7 +29,7 @@ def find_relevant_context(query_embedding, max_results=5):
     with driver.session() as session:
         cypher_query = """
         MATCH (n)
-        WHERE exists(n.vectorEmbedding)
+        WHERE n.vectorEmbedding IS NOT NULL
         RETURN n.title AS title, n.content AS content, n.vectorEmbedding AS embedding, 
                labels(n) AS labels
         """
@@ -88,4 +88,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)

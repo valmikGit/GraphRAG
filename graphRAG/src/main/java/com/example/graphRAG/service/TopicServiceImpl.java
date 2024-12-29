@@ -5,11 +5,12 @@ import com.example.graphRAG.entity.Topic;
 import com.example.graphRAG.exception.TopicAlreadyExistsException;
 import com.example.graphRAG.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.net.HttpRetryException;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TopicServiceImpl implements TopicService {
     @Autowired
     private TopicRepository topicRepository;

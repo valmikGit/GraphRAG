@@ -1,7 +1,6 @@
 package com.example.graphRAG.service;
 
 import com.example.graphRAG.entity.Author;
-import com.example.graphRAG.entity.Document;
 import com.example.graphRAG.repository.AuthorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -86,8 +85,8 @@ public class NLPServiceImpl implements NLPService {
 //    @PostConstruct
 //    public void init() {
 //        Author author = new Author();
-//        author.setName("Random Author");
-//        double[] random_Vector = {0.0, 0.0};
+//        author.setName("J.K.Rowling");
+//        double[] random_Vector = this.generateEmbedding(author.getName());
 //        author.setVectorEmbedding(random_Vector);
 //        authorRepository.save(author);
 //    }

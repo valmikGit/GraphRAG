@@ -11,11 +11,11 @@ import com.example.graphRAG.repository.AuthorRepository;
 import com.example.graphRAG.repository.DocumentRepository;
 import com.example.graphRAG.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.print.Doc;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
