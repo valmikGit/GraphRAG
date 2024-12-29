@@ -10,4 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class QueryController {
     @Autowired
     private NLPService nlpService;
+
+    
 }

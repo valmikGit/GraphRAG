@@ -2,6 +2,7 @@ package com.example.graphRAG.controller;
 
 import com.example.graphRAG.dto.DocumentDto;
 import com.example.graphRAG.exception.DocumentAlreadyExistsException;
+import com.example.graphRAG.exception.DocumentHasTopicException;
 import com.example.graphRAG.exception.UserAlreadyExistsException;
 import com.example.graphRAG.service.DocumentService;
 import lombok.Getter;
@@ -93,5 +94,22 @@ public class DocumentController {
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllDocuments() {
         return ResponseEntity.ok().body(documentService.getAllDocuments());
+    }
+
+    @PostMapping("/addTopic")
+    public ResponseEntity<?> addTopic(
+            @RequestParam("documentId") Long documentId,
+            @RequestParam("topicId") Long topicId
+    ) {
+        try {
+            DocumentDto documentDto = documentService.addTopicToDocument(topicId, documentId);
+            if (documentDto == null) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                return ResponseEntity.ok().body(documentDto);
+            }
+        } catch (DocumentHasTopicException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }

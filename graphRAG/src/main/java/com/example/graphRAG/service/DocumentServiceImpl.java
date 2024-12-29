@@ -6,6 +6,7 @@ import com.example.graphRAG.entity.Author;
 import com.example.graphRAG.entity.Document;
 import com.example.graphRAG.entity.Topic;
 import com.example.graphRAG.exception.DocumentAlreadyExistsException;
+import com.example.graphRAG.exception.DocumentHasTopicException;
 import com.example.graphRAG.repository.AuthorRepository;
 import com.example.graphRAG.repository.DocumentRepository;
 import com.example.graphRAG.repository.TopicRepository;
@@ -96,6 +97,12 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentDto addTopicToDocument(long topicId, long id) {
         Optional<Document> document = documentRepository.findById(topicId);
         if (document.isPresent()) {
+            for (Topic topic : document.get().getTopics()) {
+                if (topic.getId() == id) {
+                    throw new DocumentHasTopicException("This topic already exists in the list of topics " +
+                            "associated with this document.");
+                }
+            }
             Optional<Topic> topic = topicRepository.findById(topicId);
             if (topic.isPresent()) {
                 document.get().getTopics().add(topic.get());
