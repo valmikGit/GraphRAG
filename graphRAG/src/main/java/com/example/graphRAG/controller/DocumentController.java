@@ -2,6 +2,7 @@ package com.example.graphRAG.controller;
 
 import com.example.graphRAG.dto.DocumentDto;
 import com.example.graphRAG.exception.DocumentAlreadyExistsException;
+import com.example.graphRAG.exception.DocumentHasKeywordException;
 import com.example.graphRAG.exception.DocumentHasTopicException;
 import com.example.graphRAG.exception.UserAlreadyExistsException;
 import com.example.graphRAG.service.DocumentService;
@@ -109,6 +110,23 @@ public class DocumentController {
                 return ResponseEntity.ok().body(documentDto);
             }
         } catch (DocumentHasTopicException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/addKeyword")
+    public ResponseEntity<?> addKeyword(
+            @RequestParam("documentId") Long documentId,
+            @RequestParam("keywordId") Long keywordId
+    ) {
+        try {
+            DocumentDto documentDto = documentService.addKeywordToDocument(keywordId, documentId);
+            if (documentDto == null) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                return ResponseEntity.ok().body(documentDto);
+            }
+        } catch (DocumentHasKeywordException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

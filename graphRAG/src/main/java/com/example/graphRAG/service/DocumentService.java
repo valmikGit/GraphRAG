@@ -13,4 +13,5 @@ public interface DocumentService {
     void deleteDocumentById(Long id);
     List<DocumentDto> getAllDocuments();
     DocumentDto addTopicToDocument(long topicId, long id);
+    DocumentDto addKeywordToDocument(long keywordId, long id);
 }

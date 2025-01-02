@@ -1,5 +1,6 @@
 package com.example.graphRAG.entity;
 import com.example.graphRAG.dto.DocumentDto;
+import com.example.graphRAG.dto.KeywordDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,17 @@ public class Document {
     private List<Keyword> keywords = new ArrayList<>();
 
     public DocumentDto convertToDto() {
-        return new DocumentDto(this.getId(), this.getTitle(), this.getContent());
+        DocumentDto documentDto = new DocumentDto();
+        documentDto.setId(this.getId());
+        documentDto.setTitle(this.getTitle());
+        documentDto.setContent(this.getContent());
+        for (Topic topic : this.getTopics()) {
+            documentDto.getTopicDtos().add(topic.convertToDto());
+        }
+        for (Keyword keyword : this.getKeywords()) {
+            documentDto.getKeywordDtos().add(keyword.convertToDto());
+        }
+        documentDto.setAuthorDto(this.getAuthor().convertToDto());
+        return documentDto;
     }
 }
