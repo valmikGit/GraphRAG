@@ -33,7 +33,10 @@ public class Document {
     @Relationship(type = "RELATED_TO", direction = Relationship.Direction.OUTGOING)
     private List<Topic> topics = new ArrayList<>();
 
+    @Relationship(type = "CONTAINS_KEYWORD", direction = Relationship.Direction.OUTGOING)
+    private List<Keyword> keywords = new ArrayList<>();
+
     public DocumentDto convertToDto() {
-        return new DocumentDto(this.getTitle(), this.getContent());
+        return new DocumentDto(this.getId(), this.getTitle(), this.getContent());
     }
 }

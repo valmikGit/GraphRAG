@@ -15,6 +15,9 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private NLPService nlpService;
+
     @Override
     public TopicDto addTopic(String name) {
         if (topicRepository.findByName(name).isPresent()) {
@@ -22,6 +25,7 @@ public class TopicServiceImpl implements TopicService {
         }
         Topic topic = new Topic();
         topic.setName(name);
+        topic.setVectorEmbedding(nlpService.generateEmbedding(topic.getName()));
         return topicRepository.save(topic).convertToDto();
     }
 
@@ -30,6 +34,7 @@ public class TopicServiceImpl implements TopicService {
         Optional<Topic> topic = topicRepository.findById(id);
         if (topic.isPresent()) {
             topic.get().setName(name);
+            topic.get().setVectorEmbedding(nlpService.generateEmbedding(topic.get().getName()));
             return topicRepository.save(topic.get()).convertToDto();
         } else {
             return null;

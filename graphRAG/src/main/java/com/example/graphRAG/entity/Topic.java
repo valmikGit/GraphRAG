@@ -23,6 +23,6 @@ public class Topic {
     private double[] vectorEmbedding;
 
     public TopicDto convertToDto() {
-        return new TopicDto(this.getName());
+        return new TopicDto(this.getId(), this.getName());
     }
 }

@@ -1,5 +1,7 @@
 package com.example.graphRAG.entity;
 
+import com.example.graphRAG.dto.UserDto;
+import com.example.graphRAG.enums.UserRole;
 import lombok.*;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -20,6 +22,7 @@ public class UserEntity implements UserDetails {
     private Long id;
     private String emailId; // should be unique, enforce in Neo4j UI
     private String password;
+    private UserRole userRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -54,5 +57,9 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserDto convertToDto() {
+        return new UserDto(this.getId(), this.getEmailId());
     }
 }
